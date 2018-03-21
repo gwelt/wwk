@@ -1,0 +1,4 @@
+{
+	"ConnectionString": "mongodb://user:password@dbservername.mlab.com:port/databasename",
+	"Collection": "wwkcollection"
+}
