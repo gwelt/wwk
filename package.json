@@ -1,0 +1,24 @@
+{
+  "name": "wwk",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gwelt/wwk.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gwelt/wwk/issues"
+  },
+  "homepage": "https://github.com/gwelt/wwk#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "mongodb": "^3.0.4",
+    "socketio": "^1.0.0"
+  }
+}

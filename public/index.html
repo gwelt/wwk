@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+  <title>wwk</title>
+  <script src="/socket.io/socket.io.js"></script>
+  <style>
+    * {font:14px Monospace; margin:0;padding:0;box-sizing:border-box;}
+    body {background-color:#ffffff;color:#000000;}
+  </style>
+</head>
+<body>
+
+  Hello World!
+  <div id=data></div>
+  
+  <script>
+  var socket = io();
+  socket.emit('data');
+  
+  function update(data) {
+    var d = document.createElement('div');
+    d.appendChild(document.createTextNode(JSON.stringify(data)));
+    document.getElementById('data').appendChild(d);
+  }
+
+  socket.on('data',(data)=>{
+    update(data);
+  });
+
+  </script>
+
+</body>
+</html>
