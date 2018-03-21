@@ -21,9 +21,9 @@ function Team(TeamId,TeamName,TeamToken) {
 }
 
 var MongoClient = require('mongodb').MongoClient;
-MongoClient.connect(config.ConnectionString, function(err, database) {
+MongoClient.connect(process.env.CONNECTIONSTRING||config.ConnectionString, function(err, database) {
   if(err) { console.log(err); return 0;}
-  const collection = database.db().collection(config.Collection);
+  const collection = database.db().collection(process.env.COLLECTION||config.Collection);
   collection.find({}).toArray(function(err, items) {
 
     items.forEach((team)=>{
