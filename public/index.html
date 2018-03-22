@@ -23,7 +23,7 @@
     document.getElementById('data').appendChild(d);
   }
 
-  socket.on('data',(data)=>{
+  socket.on('data', function (data){
     update(data);
   });
 
