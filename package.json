@@ -10,6 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/gwelt/wwk.git"
   },
+  "scripts": {"start": "node index.js"},
   "author": "",
   "license": "MIT",
   "bugs": {
