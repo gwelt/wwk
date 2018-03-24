@@ -19,7 +19,6 @@
   "dependencies": {
     "express": "^4.16.3",
     "mongodb": "^3.0.4",
-    "semantic-ui": "^2.3.1",
     "socketio": "^1.0.0"
   }
 }
