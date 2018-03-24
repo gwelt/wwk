@@ -1,4 +1,4 @@
 {
-	"ConnectionString": "mongodb://sven:sven@ds215739.mlab.com:15739/heroku_ck7nwzz1",
-	"Collection": "friends"
+	"NO_ConnectionString": "mongodb://user:password@ds.mlab.com:12345/database",
+	"NO_Collection": "collection"
 }
