@@ -60,3 +60,6 @@ typings/
 # config-files
 config.json
 *.config
+
+#Semantic UI-base
+/semantic/
