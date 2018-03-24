@@ -1,4 +1,0 @@
-{
-	"NO_ConnectionString": "mongodb://user:password@ds.mlab.com:12345/database",
-	"NO_Collection": "collection"
-}
