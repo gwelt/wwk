@@ -4,13 +4,12 @@
   "description": "wwk",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gwelt/wwk.git"
   },
-  "scripts": {"start": "node index.js"},
   "author": "",
   "license": "MIT",
   "bugs": {
