@@ -4,7 +4,8 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var path = require('path');
 var port = process.env.PORT || 3000;
-const config = require('./config.json');
+var config = {};
+try {config=require('./config.json')} catch(err){console.log('No config.json. Will try ENV.')};
 
 server.listen(port, function () {
   console.log('Server listening at port %d', port);
