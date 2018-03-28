@@ -7,107 +7,13 @@
   <script src="/semantic/semantic.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
 </head>
-<body>
+<body id="body" style="background-color:rgb(247, 247, 247)">
 
-  <script>
-    function formshow(){
-      $('#master').dimmer('show');
-      $('.form').transition('hide');
-      $('.form').transition('vertical flip');
-      $('#name').focus();
-    };
-  </script>
-
-
+<div id="main"></div>
+<button id="update_all_clients" class="ui large floated button">update for all clients</button>
+<button id="reload_from_db" class="ui large floated button">reload from database and update for all clients</button>
 
 <div class="ui" id="master">
-
-  <div class="ui shape" id="TEAM01">
-    <div class="sides">
-      <div class="active side">
-        <div class="ui card" style="margin:10px;width:320px;height:220px">
-          <div class="content">
-            <div class="header">Name of the Team</div>
-            <div class="meta">
-              Team-Chef
-            </div>
-            <div class="description">
-            </div>
-          </div>
-          <div class="extra content">
-            <span class="right floated">
-              edit
-            </span>
-            <span>
-              <i class="user icon" id="shape01"></i>
-              5 Läufer
-            </span>
-          </div>
-        </div>
-      </div>
-      <div class="side">
-        <div class="ui card" style="margin:10px;width:320px;height:220px">
-          <div class="content">
-            <a class="header" onclick="formshow()">Name of the Team</a>
-          </div>
-          <div class="extra content">
-            <button id="btn2" class="ui tiny right floated primary button">edit</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="ui shape">
-    <div class="sides">
-      <div class="active side">
-        <div class="ui card" style="margin:10px;width:320px;height:220px">
-        </div>
-      </div>
-      <div class="side">
-        <div class="ui card" style="margin:10px;width:320px;height:220px">
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="ui shape">
-    <div class="sides">
-      <div class="active side">
-        <div class="ui card" style="margin:10px;width:320px;height:220px">
-        </div>
-      </div>
-      <div class="side">
-        <div class="ui card" style="margin:10px;width:320px;height:220px">
-        </div>
-      </div>
-    </div>
-  </div>
-
-<!--
-  <div class="ui big raised segments" style="margin:10px;padding:0px;width:320px;z-index:0">
-    <div class="ui big top attached label">ERGO Family</div>
-    <div class="ui devided selection list"></div>
-    <div class="ui big label">
-    <i class="mail icon"></i> ERGO Family
-    </div>
-
-    <div class="ui segment">
-      <div style="padding:0px;background-color:#f0f0f0">1.) Jan Müller</div>
-      <div style="background-color:#e0e0e0">1.) Jan Müller</div>
-      <a class="ui green tag label">freie Plätze</a>
-      <br>
-      <a class="ui red ribbon label">Overview</a>ERGO Family
-      <button id="btn2" class="ui fluid primary button">Das ist mein Team!</button>
-    </div>
-  </div>
-
-  <div class="ui segment" style="margin:10px;padding:0px;width:320px;z-index:0">
-    <h2 class="ui right floated header">Floated Content</h2>
-    <div class="ui clearing divider"></div>
-    <p></p>
-  </div>
--->
 
   <div class="ui page dimmer">
   <div class="ui" style="width:100%;height:100%">
@@ -140,37 +46,7 @@
 
 </div>
 
-<script>
-  $('.shape').click(function(){
-    $(this).shape('flip over');
-  });
+<script src="a.js"></script>
 
-  $('#btn').click(function(){
-    $('.form').transition('vertical flip');
-    $('#master').dimmer('hide');
-  });
-
-  $('#btn2').click(function(){formshow()});
-</script>
-
-<!--
-  <script>
-  var socket = io();
-  socket.emit('data');
-
-  function update(data) {
-    var d = document.createElement('div');
-    d.appendChild(document.createTextNode(JSON.stringify(data)));
-    document.getElementById('data').appendChild(d);
-  }
-
-  socket.on('data', function (data){
-    update(data);
-  });
-
-  </script>
-
-  <div id=data></div>
--->
 </body>
 </html>

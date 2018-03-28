@@ -12,40 +12,58 @@ server.listen(port, function () {
 });
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 var teamlist = [];
 
-function Team(TeamId,TeamName,TeamToken) {
-  this.Id=TeamId;
-  this.Name=TeamName;
-  this.Token=TeamToken;
+function Team(ID,Name,Chef,R1,R2,R3,R4,R5,Standby) {
+  this.ID=ID;
+  this.Name=Name;
+  this.Chef=Chef;
+  this.R1=R1;
+  this.R2=R2;
+  this.R3=R3;
+  this.R4=R4;
+  this.R5=R5;
+  this.Standby=Standby;
 }
 
-var MongoClient = require('mongodb').MongoClient;
-MongoClient.connect(process.env.CONNECTIONSTRING||config.ConnectionString, function(err, database) {
-  if(err) { console.log(err); return 0;}
-  const collection = database.db().collection(process.env.COLLECTION||config.Collection);
-  collection.find({}).toArray(function(err, items) {
-
-    items.forEach((team)=>{
-      teamlist.push(new Team(team.Name,team.Name,team.Name))
-    });
-
-    console.log(items); database.close();
-  });
-});
-
-
 io.on('connection', function (socket) {
-
   // socket.emit = reply only to the client who asked
   // socket.broadcast.emit = reply to all clients except the one who asked
   // io.sockets.emit = reply to all clients (including the one who asked)
-
   //socket.emit('data',{welcomemessage: 'Welcome!'});
 
   socket.on('data', function () {
     socket.emit('data', JSON.stringify(teamlist));
   });
+  socket.on('update_all_clients', function () {
+    io.sockets.emit('data', JSON.stringify(teamlist));
+  });
+  socket.on('reload_from_db', function () {
+    get_teamlist_from_db((list)=>{teamlist=list;io.sockets.emit('data', JSON.stringify(teamlist));});
+  });
 
 });
+
+var database,collection;
+
+var MongoClient = require('mongodb').MongoClient;
+MongoClient.connect(process.env.CONNECTIONSTRING||config.ConnectionString, function(err, db) {
+  if(err) { console.log(err); return 0;}
+  database = db;
+  collection = db.db().collection(process.env.COLLECTION||config.Collection);
+  get_teamlist_from_db((list)=>{teamlist=list});
+});
+
+function get_teamlist_from_db(callback) {
+  var teamlist=[];
+  collection.find({}).sort({ID:1}).toArray(function(err, items) {
+    items.forEach((team)=>{
+      teamlist.push(new Team(team.ID,team.Name,team.Chef,team.R1,team.R2,team.R3,team.R4,team.R5,team.Standby))
+    });
+    console.log(JSON.stringify(teamlist));
+    callback(teamlist);
+  });
+}
+
+process.on('SIGINT', function(){console.log('SIGINT'); database.close(function (err,res){if (err){console.log(err)} else {console.log('DB-connection closed '+res)}; process.exit()})});
+process.on('SIGTERM', function(){console.log('SIGTERM'); database.close(function (err,res){if (err){console.log(err)} else {console.log('DB-connection closed '+res)}; process.exit()})});
