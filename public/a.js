@@ -15,22 +15,9 @@ function update(data) {
   }
   t.appendChild(tbody);
 
-  var b1 = document.createElement('button');
-  b1.setAttribute('class', 'ui large floated button');
-  b1.id='update_all_clients';
-  b1.innerHTML='update_all_clients';
-
-  var b2 = document.createElement('button');
-  b2.setAttribute('class', 'ui large floated button');
-  b2.id='reload_from_db';
-  b2.innerHTML='reload_from_db';
-  b2.onclick='javascript:reload_from_db()';
-
   var d = document.createElement('div');
   d.setAttribute('style', 'padding-top:30px;margin:0px 20px 0 20px');
   d.appendChild(t);
-  d.appendChild(b1);
-  d.appendChild(b2);
 
   var m = document.getElementById("main");
   while (m.firstChild) {m.removeChild(m.firstChild)}
@@ -46,14 +33,6 @@ function build_team_info(data){
   }
   newtd('<span style=font-size:1.4em>'+data.Name+'</span><br>'+data.Chef+'');
   newtd('[1] '+data.R1+' > [2] '+data.R2+' > [3] '+data.R3+' > [4] '+data.R4+' > [5] '+data.R5+'<br>Ersatzläufer: '+data.Standby+'');
-  /*
-  tr.appendChild(document.createElement('td')).appendChild(document.createTextNode(data.R1));
-  tr.appendChild(document.createElement('td')).appendChild(document.createTextNode(data.R2));
-  tr.appendChild(document.createElement('td')).appendChild(document.createTextNode(data.R3));
-  tr.appendChild(document.createElement('td')).appendChild(document.createTextNode(data.R4));
-  tr.appendChild(document.createElement('td')).appendChild(document.createTextNode(data.R5));
-  tr.appendChild(document.createElement('td')).appendChild(document.createTextNode(data.Standby));
-  */
   return tr;
 }
 
@@ -66,6 +45,10 @@ socket.on('data', function (data){
 
 function reload_from_db() {
   socket.emit('reload_from_db');
+};
+
+function update_all_clients() {
+  socket.emit('update_all_clients');
 };
 
 function formshow(){
@@ -81,5 +64,5 @@ $('#btn_submit').click(function(){
   $('#master').dimmer('hide');
 });
 
-$('#reload_from_db').click(function(){socket.emit('reload_from_db')});
-$('#update_all_clients').click(function(){socket.emit('update_all_clients')});
+$('#reload_from_db').click(function(){reload_from_db()});
+$('#update_all_clients').click(function(){update_all_clients()});
