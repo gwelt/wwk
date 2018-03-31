@@ -13,9 +13,11 @@
 <div id="main"></div>
 
 <div style="margin:20px">
+  <!--
   <button id="btn_edit" class="ui large button">EDIT</button>
   <button id="reload_from_db" class="ui large button">RELOAD DATABASE</button>
   <button id="update_all_clients" class="ui large button">UPDATE ALL CLIENTS</button>
+  -->
 </div>
 
 <div class="ui" id="master">
@@ -26,20 +28,20 @@
       <h3 class="ui horizontal inverted divider header">Mein Team beim Mopo-Staffellauf</h3>
       <br>
       <div class="two fields">
-        <div class="field fluid ui right labeled input"><input type="text" id="name" placeholder=""><a class="ui tag label">Team-Name</a></div>
-        <div class="field fluid ui right labeled input"><input type="text" id="lead" placeholder=""><a class="ui tag label">Team-Chef</a></div>
+        <div class="field fluid ui right labeled input"><input type="text" id="Name" placeholder=""><a class="ui tag label">Team-Name</a></div>
+        <div class="field fluid ui right labeled input"><input type="text" id="Chef" placeholder=""><a class="ui tag label">Team-Chef</a></div>
       </div>
 
       <div class="three fields">
-        <div class="field ui left labeled input"><label for="amount" class="ui label">1.</label><input type="text" placeholder=""></div>
-        <div class="field ui left labeled input"><label for="amount" class="ui label">2.</label><input type="text" placeholder=""></div>
-        <div class="field ui left labeled input"><label for="amount" class="ui label">3.</label><input type="text" placeholder=""></div>
+        <div class="field ui left labeled input"><label for="amount" class="ui label">1.</label><input type="text" id="R1" placeholder=""></div>
+        <div class="field ui left labeled input"><label for="amount" class="ui label">2.</label><input type="text" id="R2" placeholder=""></div>
+        <div class="field ui left labeled input"><label for="amount" class="ui label">3.</label><input type="text" id="R3" placeholder=""></div>
       </div>
 
       <div class="three fields">
-        <div class="field ui left labeled input"><label for="amount" class="ui label">4.</label><input type="text" placeholder=""></div>
-        <div class="field ui left labeled input"><label for="amount" class="ui label">5.</label><input type="text" placeholder=""></div>
-        <div class="field ui left labeled input"><label for="amount" class="ui label">Ersatz</label><input type="text" placeholder=""></div>
+        <div class="field ui left labeled input"><label for="amount" class="ui label">4.</label><input type="text" id="R4" placeholder=""></div>
+        <div class="field ui left labeled input"><label for="amount" class="ui label">5.</label><input type="text" id="R5" placeholder=""></div>
+        <div class="field ui left labeled input"><label for="amount" class="ui label">Ersatz</label><input type="text" id="Standby" placeholder=""></div>
       </div>
 
       <div class="field"><button id="btn_submit" class="ui large fluid right floated primary button">Das ist mein Team!</button></div>

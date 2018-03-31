@@ -24,6 +24,13 @@ function update(data) {
   m.appendChild(d);
 }
 
+function getDataByID(id,data) {
+  var row = JSON.parse(data).find(function(e) {
+    return e.ID == id
+  });
+  return row;
+}
+
 function build_team_info(data){
   var tr=document.createElement('tr');
   function newtd(html) {
@@ -33,13 +40,17 @@ function build_team_info(data){
   }
   newtd('<span style=font-size:1.4em>'+data.Name+'</span><br>'+data.Chef+'');
   newtd('[1] '+data.R1+' > [2] '+data.R2+' > [3] '+data.R3+' > [4] '+data.R4+' > [5] '+data.R5+'<br>Ersatzläufer: '+data.Standby+'');
+  newtd('<button class="ui large button" onclick="formshow(\''+data.ID+'\')">bearbeiten</button>');
+  //Startnummer, angemeldet am
   return tr;
 }
 
 var socket = io();
 socket.emit('data');
 
+var _data={};
 socket.on('data', function (data){
+  _data=data;
   update(data);
 });
 
@@ -51,14 +62,22 @@ function update_all_clients() {
   socket.emit('update_all_clients');
 };
 
-function formshow(){
+function formshow(id){
   $('#master').dimmer('show');
   $('.form').transition('hide');
   $('.form').transition('vertical flip');
-  $('#name').focus();
+  var team=getDataByID(id,_data);
+  $('#Name').val(team.Name);
+  $('#Chef').val(team.Chef);
+  $('#R1').val(team.R1);
+  $('#R2').val(team.R2);
+  $('#R3').val(team.R3);
+  $('#R4').val(team.R4);
+  $('#R5').val(team.R5);
+  $('#Standby').val(team.Standby);
+  $('#Name').focus();
 };
 
-$('#btn_edit').click(function(){formshow()});
 $('#btn_submit').click(function(){
   $('.form').transition('vertical flip');
   $('#master').dimmer('hide');
