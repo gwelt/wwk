@@ -8,11 +8,35 @@
   <script src="/semantic/semantic.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
 </head>
-<body id="body" style="background-color:rgb(247, 247, 247)">
+<body id="body" style="margin:0px 20px 0px 20px;background-color:rgb(247, 247, 247)">
+<style>.lbl {white-space:nowrap; background-color: #fff; padding:10px;}</style>
 
-<div id="main"></div>
+  <div style="min-height:20px"></div>
+  <div class="ui icon message">
+    <i class="inbox icon"></i>
+    <div class="content">
+      <div class="header">
+        Have you heard about our mailing list?
+      </div>
+      <p>Get the best news in your e-mail every day.</p>
+    </div>
+    <i class="close icon"></i>
+  </div>
 
-<div style="margin:20px">
+<div id="main">
+  <div class="ui icon message">
+    <i class="notched circle loading icon"></i>
+    <div class="content">
+      <div class="header">
+        Just one second
+      </div>
+      <p>We're fetching that content for you.</p>
+    </div>
+  </div>
+</div>
+
+
+<div>
   <!--
   <button id="btn_edit" class="ui large button">EDIT</button>
   <button id="reload_from_db" class="ui large button">RELOAD DATABASE</button>
