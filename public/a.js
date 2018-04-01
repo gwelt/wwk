@@ -2,7 +2,7 @@ function update(data) {
   data=JSON.parse(data);
 
   var t = document.createElement('table');
-  t.setAttribute('class', 'ui very basic table');
+  t.setAttribute('class', 'ui very basic selectable table');
   //var thread = document.createElement('tbody'); //thread
   //thread.innerHTML='<thread><tr><th>Team-Name</th><th>Team-Chef</th><th>Läufer 1</th><th>Läufer 2</th><th>Läufer 3</th><th>Läufer 4</th><th>Läufer 5</th><th>Ersatzläufer</th></tr></thread>';
   //t.appendChild(thread);
