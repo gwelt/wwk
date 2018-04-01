@@ -38,14 +38,13 @@ function build_team_info(data){
     td.innerHTML=html;
     tr.appendChild(td);
   }
-  newtd('<span style=font-size:1.4em>'+data.Name+'</span><br>'+data.Chef+'');
+  newtd('<span style=font-size:1.2em>'+data.Name+'</span><br>'+data.Chef+'');
   //newtd('<span class="lbl"><div class="ui yellow label">1</div> '+data.R1+'</span> <span class="lbl"><div class="ui yellow label">2</div> '+data.R2+'</span> <span class="lbl"><div class="ui yellow label">3</div> '+data.R3+'</span> <span class="lbl"><div class="ui yellow label">4</div> '+data.R4+'</span> <span class="lbl"><div class="ui yellow label">5</div> '+data.R5+'</span> <span class="lbl"><div class="ui label">Ersatzläufer</div> '+data.Standby+'');
-  function build_member(pos,text) {
-    return '<div class="ui label"><div class="ui yellow label small circular">'+pos+'</div> '+text+'</div>';
-  }
-  newtd(build_member(1,data.R1)+build_member(2,data.R2)+build_member(3,data.R3)+build_member(4,data.R4)+build_member(5,data.R5)+build_member('Ersatz',data.Standby));
-  newtd('<button class="ui large button" onclick="formshow(\''+data.ID+'\')">bearbeiten</button>');
-  //Startnummer, angemeldet am
+  //function build_member(pos,text) {return '<div class="ui label"><div class="ui yellow label small circular">'+pos+'</div> '+text+'</div>';}
+  //newtd(build_member(1,data.R1)+build_member(2,data.R2)+build_member(3,data.R3)+build_member(4,data.R4)+build_member(5,data.R5)+build_member('Ersatz',data.Standby));
+  newtd(data.R1); newtd(data.R2); newtd(data.R3); newtd(data.R4); newtd(data.R5); newtd(data.Standby);
+  //newtd('<button class="ui large button" onclick="formshow(\''+data.ID+'\')">edit</button>');
+  newtd('<div onclick="formshow(\''+data.ID+'\')" class="ui vertical animated button" tabindex="0"><div class="hidden content">edit</div><div class="visible content"><i class="edit icon"></i></div></div>');
   return tr;
 }
 
