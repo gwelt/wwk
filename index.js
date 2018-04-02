@@ -41,6 +41,9 @@ io.on('connection', function (socket) {
   socket.on('reload_from_db', function () {
     get_teamlist_from_db((list)=>{teamlist=list;io.sockets.emit('data', JSON.stringify(teamlist));});
   });
+  socket.on('write_to_db', function (data) {
+    console.log(data);
+  });
 
 });
 

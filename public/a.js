@@ -65,7 +65,25 @@ function update_all_clients() {
   socket.emit('update_all_clients');
 };
 
-function formshow(id){
+function Team(ID,Name,Chef,R1,R2,R3,R4,R5,Standby) {
+  this.ID=ID;
+  this.Name=Name;
+  this.Chef=Chef;
+  this.R1=R1;
+  this.R2=R2;
+  this.R3=R3;
+  this.R4=R4;
+  this.R5=R5;
+  this.Standby=Standby;
+}
+
+function write_to_db(data) {
+  socket.emit('write_to_db', data);
+};
+
+var id=0;
+function formshow(_id){
+  id=_id;
   $('#master').dimmer('show');
   $('.form').transition('hide');
   $('.form').transition('vertical flip');
@@ -82,6 +100,7 @@ function formshow(id){
 };
 
 $('#btn_submit').click(function(){
+  write_to_db(JSON.stringify(new Team(id,$('#Name').val(),$('#Chef').val(),$('#R1').val(),$('#R2').val(),$('#R3').val(),$('#R4').val(),$('#R5').val(),$('#Standby').val())));
   $('.form').transition('vertical flip');
   $('#master').dimmer('hide');
 });
