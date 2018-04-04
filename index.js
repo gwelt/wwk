@@ -43,6 +43,17 @@ io.on('connection', function (socket) {
   });
   socket.on('write_to_db', function (data) {
     console.log(data);
+    data = JSON.parse(data);
+    // find teamlist-Item
+    var i=0; while (i<teamlist.length && teamlist[i].ID!=data.ID) {i++}
+    if (i<teamlist.length) {
+      // update in object
+      teamlist[i]=new Team(data.ID,data.Name,data.Chef,data.R1,data.R2,data.R3,data.R4,data.R5,data.Standby);
+      // update in DB
+      // ...
+      io.sockets.emit('data', JSON.stringify(teamlist));
+    }
+    else {console.log('Could not find/update ID '+data.ID+'.')}
   });
 
 });
