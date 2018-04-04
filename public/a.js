@@ -1,11 +1,8 @@
-function update(data) {
+function update_view(data) {
   data=JSON.parse(data);
 
   var t = document.createElement('table');
   t.setAttribute('class', 'ui very basic selectable table');
-  //var thread = document.createElement('tbody'); //thread
-  //thread.innerHTML='<thread><tr><th>Team-Name</th><th>Team-Chef</th><th>Läufer 1</th><th>Läufer 2</th><th>Läufer 3</th><th>Läufer 4</th><th>Läufer 5</th><th>Ersatzläufer</th></tr></thread>';
-  //t.appendChild(thread);
 
   var tbody = document.createElement('tbody');
   i=0;
@@ -16,7 +13,6 @@ function update(data) {
   t.appendChild(tbody);
 
   var d = document.createElement('div');
-  //d.setAttribute('style', 'padding-top:30px;margin:0px 20px 0 20px');
   d.appendChild(t);
 
   var m = document.getElementById("main");
@@ -25,10 +21,9 @@ function update(data) {
 }
 
 function getDataByID(id,data) {
-  var row = JSON.parse(data).find(function(e) {
-    return e.ID == id
-  });
-  return row;
+  var d=JSON.parse(data), i=0;
+  while (i<d.length && d[i].ID!=id) {i++}
+  return i<d.length?d[i]:false;
 }
 
 function build_team_info(data){
@@ -39,22 +34,18 @@ function build_team_info(data){
     tr.appendChild(td);
   }
   newtd('<span style=font-size:1.2em>'+data.Name+'</span><br>'+data.Chef+'');
-  //newtd('<span class="lbl"><div class="ui yellow label">1</div> '+data.R1+'</span> <span class="lbl"><div class="ui yellow label">2</div> '+data.R2+'</span> <span class="lbl"><div class="ui yellow label">3</div> '+data.R3+'</span> <span class="lbl"><div class="ui yellow label">4</div> '+data.R4+'</span> <span class="lbl"><div class="ui yellow label">5</div> '+data.R5+'</span> <span class="lbl"><div class="ui label">Ersatzläufer</div> '+data.Standby+'');
-  //function build_member(pos,text) {return '<div class="ui label"><div class="ui yellow label small circular">'+pos+'</div> '+text+'</div>';}
-  //newtd(build_member(1,data.R1)+build_member(2,data.R2)+build_member(3,data.R3)+build_member(4,data.R4)+build_member(5,data.R5)+build_member('Ersatz',data.Standby));
   newtd(data.R1); newtd(data.R2); newtd(data.R3); newtd(data.R4); newtd(data.R5); newtd(data.Standby);
-  //newtd('<button class="ui large button" onclick="formshow(\''+data.ID+'\')">edit</button>');
   newtd('<div onclick="formshow(\''+data.ID+'\')" class="ui vertical animated button" tabindex="0"><div class="hidden content">edit</div><div class="visible content"><i class="edit icon"></i></div></div>');
   return tr;
 }
 
 var socket = io();
-socket.emit('data');
+socket.emit('get_data');
 
 var _data={};
 socket.on('data', function (data){
   _data=data;
-  update(data);
+  update_view(data);
 });
 
 function reload_from_db() {
