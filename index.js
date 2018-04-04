@@ -32,7 +32,7 @@ io.on('connection', function (socket) {
   // io.sockets.emit = reply to all clients (including the one who asked)
   //socket.emit('data',{welcomemessage: 'Welcome!'});
 
-  socket.on('data', function () {
+  socket.on('get_data', function () {
     socket.emit('data', JSON.stringify(teamlist));
   });
   socket.on('update_all_clients', function () {
