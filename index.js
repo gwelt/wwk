@@ -49,9 +49,11 @@ io.on('connection', function (socket) {
     if (i<teamlist.length) {
       // update in object
       teamlist[i]=new Team(data.ID,data.Name,data.Chef,data.R1,data.R2,data.R3,data.R4,data.R5,data.Standby);
-      // update in DB
-      // ...
       io.sockets.emit('data', JSON.stringify(teamlist));
+      // update in DB
+      collection.update({ID:data.ID}, teamlist[i], {upsert:false,w:1}, function(err, doc) {
+        console.log('write to db: ID='+data.ID+' error='+err);
+      });
     }
     else {console.log('Could not find/update ID '+data.ID+'.')}
   });
