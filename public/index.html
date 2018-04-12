@@ -8,19 +8,16 @@
   <script src="/semantic/semantic.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
 </head>
-<body id="body" style="margin:0px 20px 0px 20px;background-color:rgb(247, 247, 247)">
+<body id="body" style="margin:0px 0px 0px 0px;background-color:rgb(247, 247, 247)">
 <style>.lbl {white-space:nowrap; background-color: #fff; padding:10px;}</style>
 
-<div style="min-height:0px"></div>
 
-<div class="ui blue message">
-  <div class="header">
-    Mopo-Staffellauf 2018
-  </div>
-  <p>Hier sind die ERGO-Staffeln des Mopo-Staffellaufs:</p>
+<div class="ui vertical segment" style="padding:15px 20px; background-color: #c44">
+  <h1 class="ui header" style="color:#fff">ERGO-Teams beim MOPO TEAM-STAFFELLAUF 2018</h1>
 </div>
 
-<div id="main">
+
+<div id="main" style="margin:20px 20px 20px 20px;>
   <div class="ui icon message">
     <i class="notched circle loading icon"></i>
     <div class="content">
@@ -32,53 +29,86 @@
   </div>
 </div>
 
-<div class="ui yellow icon message">
-  <i class="blind icon"></i>
-  <div class="content">
-    <div class="header">
-      Du möchtest auch mitlaufen, hast aber noch keine Mannschaft gefunden?
+
+  <div class="ui inverted vertical footer segment">
+    <div class="ui center aligned container">
+      <div class="ui stackable inverted divided grid">
+        <div class="three wide column">
+          <div class="ui inverted statistic">
+          <div class="value">
+            15
+          </div>
+          <div class="label">
+            Staffeln
+          </div>
+          </div>
+        </div>
+        <div class="three wide column">
+          <div class="ui inverted statistic">
+          <div class="value">
+            75
+          </div>
+          <div class="label">
+            Läufer
+          </div>
+          </div>
+        </div>
+        <div class="three wide column">
+          <div class="ui inverted statistic">
+          <div class="value">
+            375
+          </div>
+          <div class="label">
+            Kilometer
+          </div>
+          </div>
+        </div>
+        <div class="seven wide column">
+          <h4 class="ui inverted header">MOPO TEAM-STAFFELLAUF</h4>
+          <p>Am 15. und 16. August 2018 ist ERGO ist mit 15 Staffeln dabei.
+          <br>Wenn du auch einen 5km-Abschnitt laufen möchtest, wende dich an einen der Team-Chefs oder an Sönke Banck.</p>
+        </div>
+      </div>
+      <div class="ui inverted section"></div>
+      <br><i class="twitter icon"></i><br>
+      <div class="ui horizontal inverted small divided link list">
+        <a class="item" href="http://www.ergosports.de/">ERGO sports Homepage</a>
+        <a class="item" href="https://www.mopo-team-staffellauf.de/">www.mopo-team-staffellauf.de</a>
+      </div>
     </div>
-    <p>Melde dich bei Sönke Banck.</p>
   </div>
+
+
+
+<div class="ui long modal" id="form">
   <i class="close icon"></i>
-</div>
+  <div class="header" id="TeamID">Mein Team beim Mopo-Staffellauf</div>
 
+  <div class="ui large equal width form" style="width:800px;margin-top:25px;margin-bottom:25px;margin-left:auto;margin-right:auto;">
 
-<div>
-  <!--
-  <button id="btn_edit" class="ui large button">EDIT</button>
-  <button id="reload_from_db" class="ui large button">RELOAD DATABASE</button>
-  <button id="update_all_clients" class="ui large button">UPDATE ALL CLIENTS</button>
-  -->
-</div>
-
-<div class="ui" id="master">
-  <div class="ui page dimmer">
-  <div class="ui" style="width:100%;height:100%">
-    <div class="ui large equal width form" style="width:800px;top:50px;margin-left:auto;margin-right:auto;">
-
-      <h3 class="ui horizontal inverted divider header">Mein Team beim Mopo-Staffellauf</h3>
-      <br>
-      <div class="two fields">
-        <div class="field fluid ui right labeled input"><input type="text" id="Name" placeholder=""><a class="ui tag label">Team-Name</a></div>
-        <div class="field fluid ui right labeled input"><input type="text" id="Chef" placeholder=""><a class="ui tag label">Team-Chef</a></div>
-      </div>
-
-      <div class="three fields">
-        <div class="field ui left labeled input"><label for="amount" class="ui label">1.</label><input type="text" id="R1" placeholder=""></div>
-        <div class="field ui left labeled input"><label for="amount" class="ui label">2.</label><input type="text" id="R2" placeholder=""></div>
-        <div class="field ui left labeled input"><label for="amount" class="ui label">3.</label><input type="text" id="R3" placeholder=""></div>
-      </div>
-
-      <div class="three fields">
-        <div class="field ui left labeled input"><label for="amount" class="ui label">4.</label><input type="text" id="R4" placeholder=""></div>
-        <div class="field ui left labeled input"><label for="amount" class="ui label">5.</label><input type="text" id="R5" placeholder=""></div>
-        <div class="field ui left labeled input"><label for="amount" class="ui label">Ersatz</label><input type="text" id="Standby" placeholder=""></div>
-      </div>
-
-      <div class="field"><button id="btn_submit" class="ui large fluid right floated primary button">Das ist mein Team!</button></div>
+    <div class="two fields">
+      <div class="field fluid ui right labeled input"><input type="text" id="Name" placeholder=""><a class="ui tag label">Team-Name</a></div>
+      <div class="field fluid ui right labeled input"><input type="text" id="Chef" placeholder=""><a class="ui tag label">Team-Chef</a></div>
     </div>
+
+    <div class="three fields">
+      <div class="field ui left labeled input"><label for="amount" class="ui label">1.</label><input type="text" id="R1" placeholder=""></div>
+      <div class="field ui left labeled input"><label for="amount" class="ui label">2.</label><input type="text" id="R2" placeholder=""></div>
+      <div class="field ui left labeled input"><label for="amount" class="ui label">3.</label><input type="text" id="R3" placeholder=""></div>
+    </div>
+
+    <div class="three fields">
+      <div class="field ui left labeled input"><label for="amount" class="ui label">4.</label><input type="text" id="R4" placeholder=""></div>
+      <div class="field ui left labeled input"><label for="amount" class="ui label">5.</label><input type="text" id="R5" placeholder=""></div>
+      <div class="field ui left labeled input"><label for="amount" class="ui label">Ersatz</label><input type="text" id="Standby" placeholder=""></div>
+    </div>
+
+    <br><div class="field"><input type="password" id="token" placeholder="Admin-Token zur Speicherung"></div>
+    
   </div>
+
+  <div class="actions">
+      <div id="btn_submit" class="ui primary button">Änderungen speichern</div>
   </div>
 </div>
 

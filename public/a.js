@@ -12,12 +12,9 @@ function update_view(data) {
   }
   t.appendChild(tbody);
 
-  var d = document.createElement('div');
-  d.appendChild(t);
-
   var m = document.getElementById("main");
   while (m.firstChild) {m.removeChild(m.firstChild)}
-  m.appendChild(d);
+  m.appendChild(t);
 }
 
 function getDataByID(id,data) {
@@ -33,9 +30,10 @@ function build_team_info(data){
     td.innerHTML=html;
     tr.appendChild(td);
   }
-  newtd('<span style=font-size:1.2em>'+data.Name+'</span><br>'+data.Chef+'');
-  newtd(data.R1); newtd(data.R2); newtd(data.R3); newtd(data.R4); newtd(data.R5); newtd(data.Standby);
-  newtd('<div onclick="formshow(\''+data.ID+'\')" class="ui vertical animated button" tabindex="0"><div class="hidden content">edit</div><div class="visible content"><i class="edit icon"></i></div></div>');
+  newtd('<span style=font-size:1.2em>'+data.Name+'</span><br>'+data.ID+' / '+data.Chef+'');
+  newtd(data.R1); newtd(data.R2); newtd(data.R3); newtd(data.R4); newtd(data.R5); newtd('<span style="font-style:italic">'+data.Standby+'</span>');
+  tr.onclick=function(){formshow(data.ID)};
+  tr.style.cursor='pointer';
   return tr;
 }
 
@@ -68,17 +66,22 @@ function Team(ID,Name,Chef,R1,R2,R3,R4,R5,Standby) {
   this.Standby=Standby;
 }
 
-function write_to_db(data) {
-  socket.emit('write_to_db', data);
+function write_to_db(token,data) {
+  socket.emit('write_to_db', {token:token, data:data});
 };
 
 var id=0;
 function formshow(_id){
   id=_id;
-  $('#master').dimmer('show');
+  $('.long.modal')
+   .modal('show')
+  ;
+
   $('.form').transition('hide');
   $('.form').transition('vertical flip');
+
   var team=getDataByID(id,_data);
+  $('#TeamID').text('Team mit der Startnummer '+team.ID+'');
   $('#Name').val(team.Name);
   $('#Chef').val(team.Chef);
   $('#R1').val(team.R1);
@@ -87,17 +90,16 @@ function formshow(_id){
   $('#R4').val(team.R4);
   $('#R5').val(team.R5);
   $('#Standby').val(team.Standby);
+  $('#token').val('');
   $('#Name').focus();
 };
 
 $('#btn_submit').click(function(){
-  write_to_db(JSON.stringify(new Team(id,$('#Name').val(),$('#Chef').val(),$('#R1').val(),$('#R2').val(),$('#R3').val(),$('#R4').val(),$('#R5').val(),$('#Standby').val())));
-  $('.form').transition('vertical flip');
-  $('#master').dimmer('hide');
+  write_to_db($('#token').val(),JSON.stringify(new Team(id,$('#Name').val(),$('#Chef').val(),$('#R1').val(),$('#R2').val(),$('#R3').val(),$('#R4').val(),$('#R5').val(),$('#Standby').val())));
+  $('.long.modal')
+   .modal('hide')
+  ;
 });
-
-$('#reload_from_db').click(function(){reload_from_db()});
-$('#update_all_clients').click(function(){update_all_clients()});
 
 $('.message .close')
   .on('click', function() {
