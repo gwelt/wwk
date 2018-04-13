@@ -34,6 +34,7 @@ function build_team_info(data){
   newtd(data.R1); newtd(data.R2); newtd(data.R3); newtd(data.R4); newtd(data.R5); newtd('<span style="font-style:italic">'+data.Standby+'</span>');
   tr.onclick=function(){formshow(data.ID)};
   tr.style.cursor='pointer';
+  //tr.style.background='#e0e0e0';
   return tr;
 }
 
@@ -77,11 +78,11 @@ function formshow(_id){
    .modal('show')
   ;
 
-  $('.form').transition('hide');
-  $('.form').transition('vertical flip');
+  //$('.form').transition('hide');
+  //$('.form').transition('vertical flip');
 
   var team=getDataByID(id,_data);
-  $('#TeamID').text('Team mit der Startnummer '+team.ID+'');
+  $('#TeamID').text('Team mit Startnummer '+team.ID+'');
   $('#Name').val(team.Name);
   $('#Chef').val(team.Chef);
   $('#R1').val(team.R1);
