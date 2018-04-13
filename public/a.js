@@ -78,9 +78,6 @@ function formshow(_id){
    .modal('show')
   ;
 
-  //$('.form').transition('hide');
-  //$('.form').transition('vertical flip');
-
   var team=getDataByID(id,_data);
   $('#TeamID').text('Team mit Startnummer '+team.ID+'');
   $('#Name').val(team.Name);
@@ -92,7 +89,6 @@ function formshow(_id){
   $('#R5').val(team.R5);
   $('#Standby').val(team.Standby);
   $('#token').val('');
-  $('#Name').focus();
 };
 
 $('#btn_submit').click(function(){
