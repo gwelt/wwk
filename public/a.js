@@ -49,7 +49,7 @@ function highlight(info) {
   $('#TR'+info.ID).transition({
     animation: 'fly left',
     onComplete : function() {
-      document.getElementById('TR'+info.ID).style.background='#a0ffa0';
+      document.getElementById('TR'+info.ID).style.background='#ffffb9';
       document.getElementById('TD_info_'+info.ID).innerHTML='<a class="ui '+info.color+' label">'+info.info+'</a>';
       $('#TR'+info.ID).transition({
         animation: 'fly right',
