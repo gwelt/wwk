@@ -50,6 +50,7 @@ io.on('connection', function (socket) {
       // update in object
       teamlist[i]=new Team(data.ID,data.Name,data.Chef,data.R1,data.R2,data.R3,data.R4,data.R5,data.Standby);
       io.sockets.emit('data', JSON.stringify(teamlist));
+      io.sockets.emit('info', {ID:data.ID,info:'updated',color:'green'});
       // update in DB
       collection.update({ID:data.ID}, teamlist[i], {upsert:false,w:1}, function(err, doc) {
         console.log('write to db: ID='+data.ID+' error='+err);

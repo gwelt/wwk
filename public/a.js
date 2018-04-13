@@ -1,5 +1,5 @@
-function update_view(data) {
-  data=JSON.parse(data);
+function update_view() {
+  data=JSON.parse(_data);
 
   var t = document.createElement('table');
   t.setAttribute('class', 'ui very basic selectable table');
@@ -25,26 +25,54 @@ function getDataByID(id,data) {
 
 function build_team_info(data){
   var tr=document.createElement('tr');
-  function newtd(html) {
+  function newtd(html,id) {
     var td=document.createElement('td');
+    if (id!=undefined) {td.id='TD'+id}
     td.innerHTML=html;
     tr.appendChild(td);
   }
-  newtd('<span style=font-size:1.2em>'+data.Name+'</span><br>'+data.ID+' / '+data.Chef+'');
+  newtd('<span style="font-size:1.2em">'+data.Name+'</span><br><span style="font-size:1.0em">'+data.ID+' / '+data.Chef+'</span>');
   newtd(data.R1); newtd(data.R2); newtd(data.R3); newtd(data.R4); newtd(data.R5); newtd('<span style="font-style:italic">'+data.Standby+'</span>');
+
+  var info='';
+  if (data.R1!=''&&data.R2!=''&&data.R3!=''&&data.R4!=''&&data.R5!='') {info='<a class="ui blue label">ready to start</a>'}
+  newtd(info,'_info_'+data.ID);
+
+  tr.id='TR'+data.ID;
   tr.onclick=function(){formshow(data.ID)};
   tr.style.cursor='pointer';
-  //tr.style.background='#e0e0e0';
   return tr;
 }
 
+function highlight(info) {
+  document.getElementById('TR'+info.ID).style.transition='background-color 3000ms linear';
+  $('#TR'+info.ID).transition({
+    animation: 'fly left',
+    onComplete : function() {
+      document.getElementById('TR'+info.ID).style.background='#a0ffa0';
+      document.getElementById('TD_info_'+info.ID).innerHTML='<a class="ui '+info.color+' label">'+info.info+'</a>';
+      $('#TR'+info.ID).transition({
+        animation: 'fly right',
+        onComplete : function() {
+          document.getElementById('TR'+info.ID).style.backgroundColor='inherit';
+          setTimeout(function(){document.getElementById('TR'+info.ID).style.transition='background-color 0ms linear';},0);
+        }
+      });
+    }
+  });
+}
+
 var socket = io();
-socket.emit('get_data');
+setTimeout(function(){socket.emit('get_data')},0);
 
 var _data={};
 socket.on('data', function (data){
   _data=data;
-  update_view(data);
+  update_view();
+});
+
+socket.on('info', function (info){
+  highlight(info)
 });
 
 function reload_from_db() {
@@ -89,6 +117,7 @@ function formshow(_id){
   $('#R5').val(team.R5);
   $('#Standby').val(team.Standby);
   $('#token').val('');
+  $('#token').val('ERGO'+team.ID);
 };
 
 $('#btn_submit').click(function(){
