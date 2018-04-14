@@ -45,14 +45,14 @@ function build_team_info(data){
 }
 
 function highlight(info) {
-  document.getElementById('TR'+info.ID).style.transition='background-color 3000ms linear';
+  document.getElementById('TR'+info.ID).style.transition='background-color 4200ms ease-in';
   $('#TR'+info.ID).transition({
-    animation: 'fly left',
+    animation: 'fade up',
     onComplete : function() {
-      document.getElementById('TR'+info.ID).style.background='#ffffb9';
+      document.getElementById('TR'+info.ID).style.background='#fff2a4';
       document.getElementById('TD_info_'+info.ID).innerHTML='<a class="ui '+info.color+' label">'+info.info+'</a>';
       $('#TR'+info.ID).transition({
-        animation: 'fly right',
+        animation: 'swing down',
         onComplete : function() {
           document.getElementById('TR'+info.ID).style.backgroundColor='inherit';
           setTimeout(function(){document.getElementById('TR'+info.ID).style.transition='background-color 0ms linear';},0);
