@@ -49,7 +49,7 @@ function highlight(info) {
   $('#TR'+info.ID).transition({
     animation: 'fade up',
     onComplete : function() {
-      document.getElementById('TR'+info.ID).style.background='#fff2a4';
+      document.getElementById('TR'+info.ID).style.background='#ffffff';
       document.getElementById('TD_info_'+info.ID).innerHTML='<a class="ui '+info.color+' label">'+info.info+'</a>';
       $('#TR'+info.ID).transition({
         animation: 'swing down',
@@ -66,14 +66,31 @@ var socket = io();
 setTimeout(function(){socket.emit('get_data')},0);
 
 var _data={};
-socket.on('data', function (data){
+socket.on('data', function (data) {
   _data=data;
   update_view();
 });
 
-socket.on('info', function (info){
+socket.on('info', function (info) {
   highlight(info)
 });
+
+socket.on('authresult', function (auth) {
+  //console.log('ID:'+auth.id+' CODE:'+auth.code+' RESULT:'+auth.result);
+  if (auth.result) {
+    $('#codediv').removeClass('error');
+    $('#cancel').removeClass('primary');
+    $('#btn_submit').addClass('primary');
+  } else {
+    $('#codediv').addClass('error')
+    $('#cancel').addClass('primary');
+    $('#btn_submit').removeClass('primary');
+  }
+});
+
+function auth(id,code) {
+  socket.emit('auth', {'id':id,'code':code})
+}
 
 function reload_from_db() {
   socket.emit('reload_from_db');
@@ -102,10 +119,7 @@ function write_to_db(code,data) {
 var id=0;
 function formshow(_id){
   id=_id;
-  $('.long.modal')
-   .modal('show')
-  ;
-
+  $('.long.modal').modal('show');
   var team=getDataByID(id,_data);
   $('#TeamID').text('Team mit Startnummer '+team.ID+'');
   $('#Name').val(team.Name);
@@ -118,20 +132,14 @@ function formshow(_id){
   $('#Standby').val(team.Standby);
   $('#code').val('');
   $('#code').val('ERGO'+team.ID);
+  auth(id,$('#code').val());
 };
+
+$('#code').keyup(function(){
+  auth(id,$('#code').val());
+});
 
 $('#btn_submit').click(function(){
   write_to_db($('#code').val(),JSON.stringify(new Team(id,$('#Name').val(),$('#Chef').val(),$('#R1').val(),$('#R2').val(),$('#R3').val(),$('#R4').val(),$('#R5').val(),$('#Standby').val())));
-  $('.long.modal')
-   .modal('hide')
-  ;
+  $('.long.modal').modal('hide');
 });
-
-$('.message .close')
-  .on('click', function() {
-    $(this)
-      .closest('.message')
-      .transition('fade')
-    ;
-  })
-;

@@ -39,6 +39,14 @@ io.on('connection', function (socket) {
   socket.on('update_all_clients', function () {
     io.sockets.emit('data', JSON.stringify(teamlist));
   });
+  socket.on('auth', function (data) {
+    var i=0; while (i<teamlist.length && teamlist[i].ID!=data.id) {i++};
+    if (i<teamlist.length) {
+      socket.emit('authresult', {'id':data.id, 'code':data.code, 'result':auth(data.code,teamlist[i].Code)})
+    } else {
+      socket.emit('authresult', {'id':data.id, 'code':data.code, 'result':false})
+    }
+  });
   socket.on('reload_from_db', function () {
     get_teamlist_from_db((list)=>{teamlist=list;io.sockets.emit('data', JSON.stringify(teamlist));});
   });
@@ -57,7 +65,10 @@ io.on('connection', function (socket) {
         console.log('write to db: ID='+data.ID+' error='+err);
       });
     }
-    else {console.log('Could not find/update ID '+data.ID+'.')}
+    else {
+      console.log('Could not find/update ID '+data.ID+'.');
+      socket.emit('info', {ID:data.ID,info:'Falscher Code!',color:'red'});
+    }
   });
 
 });
@@ -84,11 +95,11 @@ function get_teamlist_from_db(callback) {
 }
 
 const crypto = require('crypto');
-function crypt(password) {
-  return crypto.createHmac('sha256','dontwanttousesalthere').update(password).digest('base64');
+function crypt(str) {
+  return crypto.createHmac('sha256','dontwanttousesalthere').update(str).digest('base64');
 }
 function auth(password,hash) {
-  console.log('AUTH '+password+' '+crypt(password)+' '+hash)
+  //console.log('AUTH '+password+' '+crypt(password)+' '+hash)
   return ( (typeof hash === 'undefined') || (hash === crypt(password)) );
 }
 

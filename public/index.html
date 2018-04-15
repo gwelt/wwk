@@ -18,6 +18,21 @@
   </div>
 </div>
 
+<!--
+<div style="padding:15px 20px 0px 20px; max-width:1220px;">
+<div class="ui error hidden message">
+  <i class="close icon"></i>
+  <div class="header">
+    There were some errors with your submission
+  </div>
+  <ul class="list">
+    <li>You must include both a upper and lower case letters in your password.</li>
+    <li>You need to select your home country.</li>
+  </ul>
+</div>
+</div>
+-->
+
 <div id="main" style="padding:15px 20px 42px 20px; max-width:1220px;min-height:820px;margin: 0 auto;">
   <div class="ui icon message">
     <i class="compass loading icon"></i>
@@ -30,67 +45,64 @@
   </div>
 </div>
 
-
-  <div class="ui inverted vertical footer segment" style="background-image: linear-gradient(to bottom, #1b1c1d, #0b0c0d)">
-    <div style="height:50px"></div>
-    <div class="ui center aligned container">
-      <div class="ui stackable inverted divided grid">
-        <div class="three wide column">
-          <div class="ui inverted statistic">
-          <div class="value">
-            15
-          </div>
-          <div class="label">
-            Staffeln
-          </div>
-          </div>
+<div class="ui inverted vertical footer segment" style="background-image: linear-gradient(to bottom, #1b1c1d, #0b0c0d)">
+  <div style="height:50px"></div>
+  <div class="ui center aligned container">
+    <div class="ui stackable inverted divided grid">
+      <div class="three wide column">
+        <div class="ui inverted statistic">
+        <div class="value">
+          15
         </div>
-        <div class="three wide column">
-          <div class="ui inverted statistic">
-          <div class="value">
-            75
-          </div>
-          <div class="label">
-            Läufer
-          </div>
-          </div>
+        <div class="label">
+          Staffeln
         </div>
-        <div class="three wide column">
-          <div class="ui inverted statistic">
-          <div class="value">
-            375
-          </div>
-          <div class="label">
-            Kilometer
-          </div>
-          </div>
-        </div>
-        <div class="seven wide column">
-          <h4 class="ui inverted header">MOPO TEAM-STAFFELLAUF</h4>
-          <p>Am 15. und 16. August ist ERGO ist mit 15 Staffeln dabei.
-          <br>Wenn du auch einen 5km-Abschnitt laufen möchtest, dann melde dich bei einem der Team-Chefs oder bei Sönke Banck.</p>
         </div>
       </div>
-      <div style="height:50px"></div>
-      <i class="ui blue ribbon label">Ready to start?</i> &nbsp; &nbsp; &nbsp; &nbsp;
-      <!--<br><i class="twitter icon"></i><br>-->
-
-      <div class="ui horizontal inverted small divided link list">
-        <a class="item" href="http://www.ergosports.de/">ergosports.de</a>
-        <a class="item" href="https://www.mopo-team-staffellauf.de/">mopo-team-staffellauf.de</a>
+      <div class="three wide column">
+        <div class="ui inverted statistic">
+        <div class="value">
+          75
+        </div>
+        <div class="label">
+          Läufer
+        </div>
+        </div>
       </div>
-
+      <div class="three wide column">
+        <div class="ui inverted statistic">
+        <div class="value">
+          375
+        </div>
+        <div class="label">
+          Kilometer
+        </div>
+        </div>
+      </div>
+      <div class="seven wide column">
+        <h4 class="ui inverted header">MOPO TEAM-STAFFELLAUF</h4>
+        <p>Am 15. und 16. August ist ERGO ist mit 15 Staffeln dabei.
+        <br>Wenn du auch einen 5km-Abschnitt laufen möchtest, dann melde dich bei einem der Team-Chefs oder bei Sönke Banck.</p>
+      </div>
     </div>
-    <div style="height:20px"></div>
+    <div style="height:50px"></div>
+    <i class="ui blue ribbon label">Ready to start?</i> &nbsp; &nbsp; &nbsp; &nbsp;
+    <!--<br><i class="twitter icon"></i><br>-->
+
+    <div class="ui horizontal inverted small divided link list">
+      <a class="item" href="http://www.ergosports.de/">ergosports.de</a>
+      <a class="item" href="https://www.mopo-team-staffellauf.de/">mopo-team-staffellauf.de</a>
+    </div>
+
   </div>
-
-
+  <div style="height:20px"></div>
+</div>
 
 <div class="ui long modal" id="form">
   <i class="close icon"></i>
   <div class="header" id="TeamID">Mein Team beim Mopo-Staffellauf</div>
 
-  <div class="ui large equal width form" style="margin:25px 15px 25px 15px;">
+  <div class="ui large equal width form" id="mainform" style="margin:25px 15px 25px 15px;">
 
     <div class="two fields">
       <div class="field fluid ui right labeled input"><input type="text" id="Name" placeholder=""><a class="ui tag label">Team-Name</a></div>
@@ -109,12 +121,17 @@
       <div class="field ui left labeled input"><label for="amount" class="ui label">Ersatz</label><input type="text" id="Standby" placeholder=""></div>
     </div>
 
-    <br><div class="field"><input type="password" id="code" placeholder="Admin-Code zur Speicherung"></div>
+    <div class="three fields">
+      <div id="codediv" class="field ui left labeled input"><div class="ui label">Admin-Code</div><input type="password" id="code" placeholder="Admin-Code"></div>
+      <div class="field ui"></div>
+      <div class="field ui"></div>
+    </div>
 
   </div>
 
   <div class="actions">
-    <button id="btn_submit" class="ui primary button" type="submit">Änderungen speichern</div>
+    <button id="cancel" onclick="$('.long.modal').modal('hide')" class="ui button">schließen</button>
+    <button id="btn_submit" class="ui primary submit button" type="submit">Änderungen speichern</button>
   </div>
 </div>
 
