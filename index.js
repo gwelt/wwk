@@ -10,6 +10,15 @@ try {config=require('./config.json')} catch(err){console.log('No config.json. Wi
 server.listen(port, function () {
   console.log('Server listening at port %d', port);
 });
+app.use('/api/:r', function (req, res, next) {
+  switch (req.params.r) {
+    case 'teams':
+      res.send(JSON.stringify(teamlist));
+      break;
+    default:
+      res.send('Valid API-calls: <a href=/api/teams>/api/teams</a>');
+  }
+})
 app.use(express.static(path.join(__dirname, 'public')));
 
 var teamlist = [];
