@@ -14,7 +14,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 var teamlist = [];
 
-function Team(ID,Name,Chef,R1,R2,R3,R4,R5,Standby) {
+function Team(ID,Name,Chef,R1,R2,R3,R4,R5,Standby,Code) {
   this.ID=ID;
   this.Name=Name;
   this.Chef=Chef;
@@ -24,6 +24,7 @@ function Team(ID,Name,Chef,R1,R2,R3,R4,R5,Standby) {
   this.R4=R4;
   this.R5=R5;
   this.Standby=Standby;
+  this.Code=Code;
 }
 
 io.on('connection', function (socket) {
@@ -46,9 +47,9 @@ io.on('connection', function (socket) {
     data = JSON.parse(json.data);
     // find teamlist-Item
     var i=0; while (i<teamlist.length && teamlist[i].ID!=data.ID) {i++}
-    if (i<teamlist.length && json.token=='ERGO'+data.ID) {
+    if (i<teamlist.length && auth(json.code,teamlist[i].Code)) {
       // update in object
-      teamlist[i]=new Team(data.ID,data.Name,data.Chef,data.R1,data.R2,data.R3,data.R4,data.R5,data.Standby);
+      teamlist[i]=new Team(data.ID,data.Name,data.Chef,data.R1,data.R2,data.R3,data.R4,data.R5,data.Standby,crypt(json.code));
       io.sockets.emit('data', JSON.stringify(teamlist));
       io.sockets.emit('info', {ID:data.ID,info:'updated',color:'green'});
       // update in DB
@@ -75,11 +76,20 @@ function get_teamlist_from_db(callback) {
   var teamlist=[];
   collection.find({}).sort({ID:1}).toArray(function(err, items) {
     items.forEach((team)=>{
-      teamlist.push(new Team(team.ID,team.Name,team.Chef,team.R1,team.R2,team.R3,team.R4,team.R5,team.Standby))
+      teamlist.push(new Team(team.ID,team.Name,team.Chef,team.R1,team.R2,team.R3,team.R4,team.R5,team.Standby,team.Code))
     });
     console.log(JSON.stringify(teamlist));
     callback(teamlist);
   });
+}
+
+const crypto = require('crypto');
+function crypt(password) {
+  return crypto.createHmac('sha256','dontwanttousesalthere').update(password).digest('base64');
+}
+function auth(password,hash) {
+  console.log('AUTH '+password+' '+crypt(password)+' '+hash)
+  return ( (typeof hash === 'undefined') || (hash === crypt(password)) );
 }
 
 process.on('SIGINT', function(){console.log('SIGINT'); database.close(function (err,res){if (err){console.log(err)} else {console.log('DB-connection closed '+res)}; process.exit()})});

@@ -95,8 +95,8 @@ function Team(ID,Name,Chef,R1,R2,R3,R4,R5,Standby) {
   this.Standby=Standby;
 }
 
-function write_to_db(token,data) {
-  socket.emit('write_to_db', {token:token, data:data});
+function write_to_db(code,data) {
+  socket.emit('write_to_db', {code:code, data:data});
 };
 
 var id=0;
@@ -116,12 +116,12 @@ function formshow(_id){
   $('#R4').val(team.R4);
   $('#R5').val(team.R5);
   $('#Standby').val(team.Standby);
-  $('#token').val('');
-  $('#token').val('ERGO'+team.ID);
+  $('#code').val('');
+  $('#code').val('ERGO'+team.ID);
 };
 
 $('#btn_submit').click(function(){
-  write_to_db($('#token').val(),JSON.stringify(new Team(id,$('#Name').val(),$('#Chef').val(),$('#R1').val(),$('#R2').val(),$('#R3').val(),$('#R4').val(),$('#R5').val(),$('#Standby').val())));
+  write_to_db($('#code').val(),JSON.stringify(new Team(id,$('#Name').val(),$('#Chef').val(),$('#R1').val(),$('#R2').val(),$('#R3').val(),$('#R4').val(),$('#R5').val(),$('#Standby').val())));
   $('.long.modal')
    .modal('hide')
   ;
