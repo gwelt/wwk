@@ -1,3 +1,4 @@
+
 function update_view() {
   data=JSON.parse(_data);
 
@@ -15,6 +16,8 @@ function update_view() {
   var m = document.getElementById("main");
   while (m.firstChild) {m.removeChild(m.firstChild)}
   m.appendChild(t);
+
+  update_counter();
 }
 
 function getDataByID(id,data) {
@@ -60,6 +63,44 @@ function highlight(info) {
       });
     }
   });
+}
+
+var its_ok_to_update_counter_again=true;
+function update_counter() {
+  if ((its_ok_to_update_counter_again)&&(_data.length>100)) {
+    its_ok_to_update_counter_again=false;
+
+    data=JSON.parse(_data);
+    var _stat='{"staffeln":"0","laeufer":"0","kilometer":"0"}';
+    var stat=JSON.parse(_stat);
+    
+    var i=0;
+    while (i<data.length) {
+      if (data[i].Chef!="") {stat.staffeln++}
+      if (data[i].R1!="") {stat.laeufer++}; if (data[i].R2!="") {stat.laeufer++}; if (data[i].R3!="") {stat.laeufer++}; if (data[i].R4!="") {stat.laeufer++}; if (data[i].R5!="") {stat.laeufer++};
+      i++;
+    }
+    stat.kilometer=stat.laeufer*5;
+    
+    animate_counter($('#staffeln_count'),0,stat.staffeln,2000);
+    animate_counter($('#laeufer_count'),0,stat.laeufer,2600);
+    animate_counter($('#kilometer_count'),0,stat.kilometer,3200);
+
+    setTimeout(function(){its_ok_to_update_counter_again=true},8000);
+  }
+}
+
+function animate_counter(element,current,target,time) {
+  element.html(++current);
+  if ((current<target)&&(current<1000)) {
+    setTimeout(function(){animate_counter(element,current,target,time)},Math.round(time/target));
+  }
+}
+
+if ('IntersectionObserver' in window) {
+  var observer = new IntersectionObserver(function(){update_counter()}, {});
+  var target = document.querySelector('#staffeln_count');
+  observer.observe(target);
 }
 
 var socket = io();
