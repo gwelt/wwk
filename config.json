@@ -1,4 +1,5 @@
 {
 	"datafile": "data.json",
-  	"datafilepath": "data"
+  	"datafilepath": "data",
+  	"cryptosecret": ""
 }
