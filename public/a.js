@@ -82,9 +82,9 @@ function update_counter() {
     }
     stat.kilometer=stat.laeufer*5;
     
-    animate_counter($('#staffeln_count'),0,stat.staffeln,2000);
-    animate_counter($('#laeufer_count'),0,stat.laeufer,2600);
-    animate_counter($('#kilometer_count'),0,stat.kilometer,3200);
+    animate_counter($('#staffeln_count'),-1,stat.staffeln,2000);
+    animate_counter($('#laeufer_count'),-1,stat.laeufer,2600);
+    animate_counter($('#kilometer_count'),-1,stat.kilometer,3200);
 
     setTimeout(function(){its_ok_to_update_counter_again=true},8000);
   }

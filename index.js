@@ -3,12 +3,16 @@ var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var path = require('path');
+var fs = require('fs');
 var port = process.env.PORT || 3000;
 var config = {};
 try {config=require('./config.json')} catch(err){console.log('No config.json. Will try ENV.')};
 
+var teamlist = [];
+
 server.listen(port, function () {
   console.log('Server listening at port %d', port);
+  get_teamlist_from_file((list)=>{teamlist=list});
 });
 app.use('/api/:r', function (req, res, next) {
   switch (req.params.r) {
@@ -20,8 +24,6 @@ app.use('/api/:r', function (req, res, next) {
   }
 })
 app.use(express.static(path.join(__dirname, 'public')));
-
-var teamlist = [];
 
 function Team(ID,Name,Chef,R1,R2,R3,R4,R5,Standby,Code) {
   this.ID=ID;
@@ -57,7 +59,7 @@ io.on('connection', function (socket) {
     }
   });
   socket.on('reload_from_db', function () {
-    get_teamlist_from_db((list)=>{teamlist=list;io.sockets.emit('data', JSON.stringify(teamlist));});
+    get_teamlist_from_file((list)=>{teamlist=list;io.sockets.emit('data', JSON.stringify(teamlist));});
   });
   socket.on('write_to_db', function (json) {
     console.log(json);
@@ -69,10 +71,6 @@ io.on('connection', function (socket) {
       teamlist[i]=new Team(data.ID,data.Name,data.Chef,data.R1,data.R2,data.R3,data.R4,data.R5,data.Standby,crypt(json.code));
       io.sockets.emit('data', JSON.stringify(teamlist));
       io.sockets.emit('info', {ID:data.ID,info:'updated',color:'green'});
-      // update in DB
-      collection.update({ID:data.ID}, teamlist[i], {upsert:false,w:1}, function(err, doc) {
-        console.log('write to db: ID='+data.ID+' error='+err);
-      });
     }
     else {
       console.log('Could not find/update ID '+data.ID+'.');
@@ -82,35 +80,71 @@ io.on('connection', function (socket) {
 
 });
 
-var database,collection;
-
-var MongoClient = require('mongodb').MongoClient;
-MongoClient.connect(process.env.CONNECTIONSTRING||config.ConnectionString, function(err, db) {
-  if(err) { console.log(err); return 0;}
-  database = db;
-  collection = db.db().collection(process.env.COLLECTION||config.Collection);
-  get_teamlist_from_db((list)=>{teamlist=list});
-});
-
-function get_teamlist_from_db(callback) {
+function get_teamlist_from_file(callback) {
   var teamlist=[];
-  collection.find({}).sort({ID:1}).toArray(function(err, items) {
-    items.forEach((team)=>{
-      teamlist.push(new Team(team.ID,team.Name,team.Chef,team.R1,team.R2,team.R3,team.R4,team.R5,team.Standby,team.Code))
-    });
-    console.log(JSON.stringify(teamlist));
+  fs.readFile(config.datafilepath+'/'+config.datafile, 'utf8', (err, data_encrypted)=>{
+    if (err){console.log('No data-file.')} else {
+      // decrypt
+      try {data_encrypted=decrypt(JSON.parse(data_encrypted))} catch (err) {console.log('decryption failed',err)}
+      try {data = JSON.parse(data_encrypted)} catch (err) {data={}};
+
+      data.forEach((team)=>{
+        teamlist.push(new Team(team.ID,team.Name,team.Chef,team.R1,team.R2,team.R3,team.R4,team.R5,team.Standby,team.Code))
+      });
+      console.log(JSON.stringify(teamlist));
+    }
     callback(teamlist);
   });
 }
 
+function save_to_file(callback,backup) {
+  // encrypt
+  let data=encrypt(JSON.stringify(teamlist));
+  fs.writeFile(config.datafilepath+'/'+config.datafile, data, 'utf8', (err)=>{
+    console.log('File '+config.datafilepath+'/'+config.datafile+' saved.'+(err?' !!! '+err:''));
+    // save backup
+    if (backup) {
+      config.datafilepath+='/backup';
+      filename=hash(JSON.stringify(teamlist));
+      fs.writeFile(config.datafilepath+'/'+filename, data, 'utf8', (err)=>{
+        console.log('File '+config.datafilepath+'/'+filename+' saved.'+(err?' !!! '+err:''));
+        callback();
+      });
+    } else {
+      callback();
+    }
+  });
+}
+
 const crypto = require('crypto');
+function encrypt(text) {
+  return text; // do not encrypt //
+  let iv=crypto.randomBytes(16);
+  let cipher = crypto.createCipheriv('aes-256-cbc', getCipherKey(process.env.SECRET||config.cryptosecret), iv);
+  let encrypted = cipher.update(text);
+  encrypted = Buffer.concat([encrypted, cipher.final()]);
+  return JSON.stringify({ iv: iv.toString('hex'), encryptedData: encrypted.toString('hex') });
+}
+function decrypt(text) {
+  let iv = Buffer.from(text.iv, 'hex');
+  let encryptedText = Buffer.from(text.encryptedData, 'hex');
+  let decipher = crypto.createDecipheriv('aes-256-cbc', getCipherKey(process.env.SECRET||config.cryptosecret), iv);
+  let decrypted = decipher.update(encryptedText);
+  decrypted = Buffer.concat([decrypted, decipher.final()]);
+  return decrypted.toString();
+}
+function getCipherKey(key) {if ((typeof key!= 'string')||(key.length<1)) {key="nosecret"}; while (key.length<32) {key+=key}; while (key.length>32) {key=key.slice(0,-1)}; return key;}
+
 function crypt(str) {
   return crypto.createHmac('sha256','dontwanttousesalthere').update(str).digest('base64');
+}
+function hash(data) {
+  return require('crypto').createHash('md5').update(data).digest("hex");
 }
 function auth(password,hash) {
   //console.log('AUTH '+password+' '+crypt(password)+' '+hash)
   return ( (typeof hash === 'undefined') || (hash === crypt(password)) );
 }
 
-process.on('SIGINT', function(){console.log('SIGINT'); database.close(function (err,res){if (err){console.log(err)} else {console.log('DB-connection closed '+res)}; process.exit()})});
-process.on('SIGTERM', function(){console.log('SIGTERM'); database.close(function (err,res){if (err){console.log(err)} else {console.log('DB-connection closed '+res)}; process.exit()})});
+process.on('SIGINT', function(){ if (config.SIGINT==undefined) {config.SIGINT=true; console.log('SIGINT'); save_to_file(()=>{process.exit(0)},true)} });
+process.on('SIGTERM', function(){ if (config.SIGTERM==undefined) {config.SIGTERM=true; console.log('SIGTERM'); save_to_file(()=>{process.exit(0)},true)} });

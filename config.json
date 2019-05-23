@@ -1,4 +1,4 @@
 {
-	"NOConnectionString": "mongodb://user:password@ds215739.mlab.com:15739/heroku_ck7nwzz1",
-	"NOCollection": "friends"
+	"datafile": "data.json",
+  	"datafilepath": "data"
 }
