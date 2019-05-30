@@ -4,7 +4,7 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var path = require('path');
 var fs = require('fs');
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 3006;
 var config = {};
 try {config=require('./config.json')} catch(err){console.log('No config.json. Will try ENV.')};
 
@@ -71,6 +71,7 @@ io.on('connection', function (socket) {
       teamlist[i]=new Team(data.ID,data.Name,data.Chef,data.R1,data.R2,data.R3,data.R4,data.R5,data.Standby,crypt(json.code));
       io.sockets.emit('data', JSON.stringify(teamlist));
       io.sockets.emit('info', {ID:data.ID,info:'updated',color:'green'});
+      save_to_file({},true);
     }
     else {
       console.log('Could not find/update ID '+data.ID+'.');
