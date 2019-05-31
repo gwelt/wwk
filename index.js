@@ -71,7 +71,7 @@ io.on('connection', function (socket) {
       teamlist[i]=new Team(data.ID,data.Name,data.Chef,data.R1,data.R2,data.R3,data.R4,data.R5,data.Standby,crypt(json.code));
       io.sockets.emit('data', JSON.stringify(teamlist));
       io.sockets.emit('info', {ID:data.ID,info:'updated',color:'green'});
-      save_to_file({},true);
+      save_to_file(()=>{},true);
     }
     else {
       console.log('Could not find/update ID '+data.ID+'.');
