@@ -105,9 +105,8 @@ function save_to_file(callback,backup) {
     console.log('File '+config.datafilepath+'/'+config.datafile+' saved.'+(err?' !!! '+err:''));
     // save backup
     if (backup) {
-      config.datafilepath+='/backup';
       filename=hash(JSON.stringify(teamlist));
-      fs.writeFile(config.datafilepath+'/'+filename, data, 'utf8', (err)=>{
+      fs.writeFile(config.datafilepath+'/backup/'+filename, data, 'utf8', (err)=>{
         console.log('File '+config.datafilepath+'/'+filename+' saved.'+(err?' !!! '+err:''));
         callback();
       });
