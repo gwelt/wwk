@@ -107,7 +107,7 @@ function save_to_file(callback,backup) {
     if (backup) {
       filename=hash(JSON.stringify(teamlist));
       fs.writeFile(config.datafilepath+'/backup/'+filename, data, 'utf8', (err)=>{
-        console.log('File '+config.datafilepath+'/'+filename+' saved.'+(err?' !!! '+err:''));
+        console.log('File '+config.datafilepath+'/backup/'+filename+' saved.'+(err?' !!! '+err:''));
         callback();
       });
     } else {
